@@ -79,7 +79,7 @@
  
 +#ifdef CONFIG_FIT_PARTITION
 +	if ((state->parts[p].flags & ADDPART_FLAG_ROOTDEV) && ROOT_DEV == 0)
-+		ROOT_DEV = part_to_dev(part)->devt;
++		ROOT_DEV = part->bd_dev;
 +#endif
 +
  	return true;
