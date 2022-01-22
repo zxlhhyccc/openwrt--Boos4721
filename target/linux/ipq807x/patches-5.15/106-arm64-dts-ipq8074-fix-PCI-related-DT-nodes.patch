@@ -1,7 +1,7 @@
-From 1154704751fd2eb0ce5246ac1cfe18524a21f314 Mon Sep 17 00:00:00 2001
+From 11339d78746348af7cb76125857332b0842ce4ae Mon Sep 17 00:00:00 2001
 From: Robert Marko <robimarko@gmail.com>
 Date: Mon, 20 Dec 2021 15:08:04 +0100
-Subject: [PATCH 3/3] arm64: dts: ipq8074: fix PCI related DT nodes
+Subject: [PATCH] arm64: dts: ipq8074: fix PCI related DT nodes
 
 Currently present PCI PHY and PCI controller nodes are not working
 and are incorrect for the v2 of IPQ8074 which is the only version
@@ -11,8 +11,8 @@ So, correct the PCI related nodes.
 
 Signed-off-by: Robert Marko <robimarko@gmail.com>
 ---
- arch/arm64/boot/dts/qcom/ipq8074.dtsi | 61 +++++++++++++++------------
- 1 file changed, 35 insertions(+), 26 deletions(-)
+ arch/arm64/boot/dts/qcom/ipq8074.dtsi | 63 ++++++++++++++++-----------
+ 1 file changed, 37 insertions(+), 26 deletions(-)
 
 --- a/arch/arm64/boot/dts/qcom/ipq8074.dtsi
 +++ b/arch/arm64/boot/dts/qcom/ipq8074.dtsi
@@ -75,7 +75,15 @@ Signed-off-by: Robert Marko <robimarko@gmail.com>
  			};
  		};
  
-@@ -707,9 +709,9 @@
+@@ -700,6 +702,7 @@
+ 			linux,pci-domain = <1>;
+ 			bus-range = <0x00 0xff>;
+ 			num-lanes = <1>;
++			max-link-speed = <2>;
+ 			#address-cells = <3>;
+ 			#size-cells = <2>;
+ 
+@@ -707,9 +710,9 @@
  			phy-names = "pciephy";
  
  			ranges = <0x81000000 0 0x10200000 0x10200000
@@ -88,7 +96,7 @@ Signed-off-by: Robert Marko <robimarko@gmail.com>
  
  			interrupts = <GIC_SPI 85 IRQ_TYPE_LEVEL_HIGH>;
  			interrupt-names = "msi";
-@@ -752,12 +754,13 @@
+@@ -752,16 +755,18 @@
  		};
  
  		pcie0: pci@20000000 {
@@ -108,7 +116,12 @@ Signed-off-by: Robert Marko <robimarko@gmail.com>
  			device_type = "pci";
  			linux,pci-domain = <0>;
  			bus-range = <0x00 0xff>;
-@@ -769,9 +772,9 @@
+ 			num-lanes = <1>;
++			max-link-speed = <3>;
+ 			#address-cells = <3>;
+ 			#size-cells = <2>;
+ 
+@@ -769,9 +774,9 @@
  			phy-names = "pciephy";
  
  			ranges = <0x81000000 0 0x20200000 0x20200000
@@ -121,7 +134,7 @@ Signed-off-by: Robert Marko <robimarko@gmail.com>
  
  			interrupts = <GIC_SPI 52 IRQ_TYPE_LEVEL_HIGH>;
  			interrupt-names = "msi";
-@@ -790,27 +793,33 @@
+@@ -790,27 +795,33 @@
  				 <&gcc GCC_PCIE0_AXI_M_CLK>,
  				 <&gcc GCC_PCIE0_AXI_S_CLK>,
  				 <&gcc GCC_PCIE0_AHB_CLK>,
