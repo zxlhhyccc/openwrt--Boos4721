@@ -42,9 +42,14 @@ MAKE_FLAGS+= \
 	KVER=$(LINUX_VERSION) \
 	ARCH=$(LINUX_KARCH) \
 	TARGET_SUFFIX=$(CONFIG_TARGET_SUFFIX) \
-	GCC_VERSION=$(GCC_VERSION) \
-	EXTRA_CFLAGS=-fno-stack-protector -I$(STAGING_DIR)/usr/include \
-	$(KERNEL_MAKE_FLAGS)
+	EXTRA_CFLAGS=-fno-stack-protector -I$(STAGING_DIR)/usr/include
+
+ifeq ($(LOCAL_VARIANT),hnat)
+    QCASSDK_CONFIG_OPTS+= HNAT_FEATURE=enable
+ifeq ($(BOARD),ipq40xx)
+    QCASSDK_CONFIG_OPTS+= RFS_FEATURE=enable
+endif
+endif
 
 ifneq (, $(findstring $(CONFIG_TARGET_BOARD), "ipq60xx" "ipq807x"))
     MAKE_FLAGS+= PTP_FEATURE=disable SWCONFIG_FEATURE=disable
